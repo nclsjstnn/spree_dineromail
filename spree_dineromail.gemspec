@@ -6,9 +6,9 @@ Gem::Specification.new do |s|
   #s.description = 'Add (optional) gem description here'
   s.required_ruby_version = '>= 1.8.7'
 
-  # s.author            = 'Nicolas Justiniano'
-  # s.email             = 'nicolas@empresaurio.cl'
-  # s.homepage          = 'http://www.empresaurio.cl'
+  s.author            = 'Nicolas Justiniano'
+  s.email             = 'nicolas@empresaurio.cl'
+  s.homepage          = 'http://www.empresaurio.cl'
   # s.rubyforge_project = 'actionmailer'
 
   s.files        = Dir['CHANGELOG', 'README.md', 'LICENSE', 'lib/**/*', 'app/**/*']
