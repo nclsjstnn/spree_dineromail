@@ -1,0 +1,56 @@
+<% if order.payment_method.type == "PaymentMethod::Dineromail" && order.payment_state == "balance_due" %>
+
+	<h4 style="border-bottom:1px solid #DDDDDD;">Efetue el pago para concretar su compra</h4>
+		
+	<form target="dineromail" accept-charset="ISO-8859-1" action="https://checkout.dineromail.com/CheckOut" id="dineromail" class="dineromail" method="post" name="CheckOut1">
+	
+		<%= hidden_field_tag "merchant", order.payment_method.preferences["dineromail_email"] %>
+		<%= hidden_field_tag "language", "es" %>
+		<%= hidden_field_tag "country_id", "3" %>
+		<%= hidden_field_tag "transaction_id", order.id %>
+		<%= hidden_field_tag "payment_method_available", "all" %>
+		<%= hidden_field_tag "tool", "button" %>
+
+		<% i = 0 %>
+		<% order.line_items.each_with_index do |item, i| %>
+			<% i += 1 %>
+			<%= hidden_field_tag "item_currency_#{i}", "clp" %>
+			<%= hidden_field_tag "payment_method_#{i}", "cl_servipag" %>
+			<%= hidden_field_tag "item_quantity_#{i}", item.quantity %>
+			<%= hidden_field_tag "item_id_#{i}", item.product.id %>
+			<%= hidden_field_tag "item_name_#{i}", item.product.name %>
+			<%= hidden_field_tag "item_ammount_#{i}", (item.price * 100).to_i %>
+		<% end %>
+		<% i += 1 %>
+			<%= hidden_field_tag "item_currency_#{i}", 1 %>
+			<%= hidden_field_tag "payment_method_#{i}", "cl_servipag" %>
+			<%= hidden_field_tag "item_quantity_#{i}", item.quantity %>
+			<%= hidden_field_tag "item_id_#{i}", 0 %>
+			<%= hidden_field_tag "item_name_#{i}", "flete" %>
+			<%= hidden_field_tag "item_ammount_#{i}", (order.adjustment_total * 100).to_i %>
+	
+		<%= hidden_field_tag "buyer_name", order.bill_address.firstname %>
+		<%= hidden_field_tag "buyer_lastname", order.bill_address.lastname %>
+		<%= hidden_field_tag "buyer_zip_code", 	order.bill_address.zipcode	%>
+		<%= hidden_field_tag "buyer_street", order.bill_address.address1 %>
+		<%= hidden_field_tag "buyer_complement", nil		%> 
+		<%= hidden_field_tag "buyer_number", order.bill_address.address2 %>
+		<%= hidden_field_tag "buyer_city", order.bill_address.city	%>
+		<%= hidden_field_tag "buyer_state", nil %>
+		<%= hidden_field_tag "buyer_country", "chi" %>
+		<%= hidden_field_tag "buyer_phone_extension", nil %>
+		<%= hidden_field_tag "buyer_phone", order.bill_address.phone %>
+		<%= hidden_field_tag "buyer_email", order.email	%>
+		
+		<%= hidden_field_tag "buyer_sex", "M" %>
+		<%= hidden_field_tag "buyer_document_number", "11111111" %>
+		<%= hidden_field_tag "buyer_document_type", "rut" %>
+	
+
+		<input type="image" 
+		src="https://cl.dineromail.com/images/base/pay-button.jpg" 
+		name="submit" alt="Paga con Dineromail!">
+	
+
+	</form>
+<% end %>
